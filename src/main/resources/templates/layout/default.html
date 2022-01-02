@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh_TW" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.springframework.org/security">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Custom fonts for this template-->
+<link th:href="@{/css/all.min.css}" href="../static/css/all.min.css" rel="stylesheet" type="text/css">
+<!-- Custom styles for this template-->
+<link th:href="@{/css/sb-admin-2.min.css}" href="../static/css/sb-admin-2.min.css" rel="stylesheet">
+<script th:src="@{/js/jquery.min.js}" src="../static/js/jquery.min.js"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}" src="../static/js/bootstrap.bundle.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script th:src="@{/js/jquery.easing.min.js}" src="../static/js/jquery.easing.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script th:src="@{/js/sb-admin-2.min.js}" src="../static/js/sb-admin-2.min.js"></script>
+<script src="https://kit.fontawesome.com/9cf6b9caf0.js" crossorigin="anonymous"></script>
+<script th:src="@{/js/fin.js}" src="../static/js/fin.js"></script>
+<title>財務處平測平台</title>
+</head>
+<body id="page-top">
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+		<!-- Sidebar -->
+		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+			<!-- Sidebar - Brand -->
+			<a class="sidebar-brand d-flex align-items-center justify-content-center" href="/index">
+				<div class="sidebar-brand-icon rotate-n-15">
+					<i class="fas fa-laugh-wink"></i>
+				</div>
+				<div class="sidebar-brand-text mx-3">平測平台</div>
+			</a>
+			<!-- Divider -->
+			<hr class="sidebar-divider my-0">
+			<!-- Nav Item - Pages Collapse Menu -->
+			<th:block sec:authorize="isAuthenticated()" th:each="module:${@userSession.getSecurityUser().funcMap}">
+				<li class="nav-item">
+				<a class="nav-link collapsed" href="#" data-toggle="collapse" th:attr="data-target='#collapse-'+${module.key},aria-controls='collapse-'+${module.key}" aria-expanded="true">
+					<i class="fas fa-fw fa-cog"></i><span th:text="${module.key}">Components</span>
+				</a>
+				<div th:id="'collapse-'+${module.key}" class="collapse" th:attr="aria-labelledby='heading-'+${module.key}" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<th:block th:each="function:${module.value}">
+							<a class="collapse-item" th:href="${function.url}" th:text="${function.name}">Buttons</a>
+						</th:block>
+					</div>
+				</div>
+			</li>
+			</th:block>
+		</ul>
+		<!-- End of Sidebar -->
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+			<!-- Main Content -->
+			<div id="content">
+				<!-- Topbar -->
+				<nav sec:authorize="isAuthenticated()" class="navbar navbar-expand navbar-light bg-white topbar static-top shadow">
+					<!-- Topbar Navbar -->
+					<ul class="navbar-nav ml-auto">
+						<!-- Nav Item - User Information -->
+						<li class="nav-item dropdown no-arrow">
+							<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text ="${@userSession.getSecurityUser().sysUser.name}">Douglas McGee</span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+								<a class="dropdown-item" th:href="@{/logout}">
+									<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>登出
+								</a>
+							</div>
+						</li>
+					</ul>
+				</nav>
+				<!-- End of Topbar -->
+				<!-- Breadcrumb -->
+				<nav sec:authorize="isAuthenticated()" th:if="${@userSession.getSecurityUser().currentFunction}" aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item" th:text="${@userSession.getSecurityUser().currentModule.name}"><a href="#">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page" th:text="${@userSession.getSecurityUser().currentFunction.name}">Library</li>
+					</ol>
+				</nav>
+				<!-- End of Breadcrumb -->
+				<!-- Begin Page Content -->
+				<div layout:fragment="content"></div>
+			</div>
+		</div>
+	</div>
+	<!-- Logout Modal-->
+	<div class="modal" id="msgModal" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">
+						<i class="fas fa-exclamation-triangle"></i>
+					</h5>
+				</div>
+				<div class="modal-body" id="msgModalContent">Select "Logout" below if you are ready
+					to end your current session.</div>
+				<div class="modal-footer">
+					<button class="btn btn-secondary" onclick="closeMsgModal()">取消</button>
+					<button class="btn btn-primary">確認</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
